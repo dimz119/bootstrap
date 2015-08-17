@@ -1,0 +1,176 @@
+<project name="target" basedir="." default="all" xmlns:jacoco="antlib:org.jacoco.ant">
+
+	<!-- junit test def -->
+	<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+		<classpath path="lib/junit-4.11.jar" />
+	</taskdef>
+
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		<classpath path="lib/jacocoant.jar" />
+	</taskdef>
+
+	<!-- module name -->
+	<property name="module" value="MODULE_NAME" />
+	<property name="version" value="HEAD" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jarfiles" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="tar.dir" value="${basedir}/${version}" />
+	<property name="test.dir" value="${basedir}/src/com/module/test" />
+	<property name="test.result.dir" location="${build.dir}/coverage" />
+	<property name="test.result.report.dir" location="${test.result.dir}/site/jacoco" />
+	<property name="test.result.class.dir" location="${classes.dir}" />
+	<property name="test.result.exec.file" location="${test.result.dir}/jacoco.exec" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="test" depends="compile">
+		<mkdir dir="${test.result.dir}"/>
+		<mkdir dir="${test.result.class.dir}"/>
+        <jacoco:coverage destfile="${test.result.exec.file}">
+            <junit fork="true" showoutput="false" forkmode="once">
+            	<formatter type="brief" usefile="false" />
+                <batchtest>
+                	<fileset dir="${src.dir}">
+                		<include name="**/*Test*" />
+                	</fileset>
+            	</batchtest>
+                <classpath>
+                    <pathelement location="${classes.dir}"/>
+                    <fileset dir="${lib.dir}">
+                        <include name="**/*.jar"/>
+                    </fileset>
+                </classpath>
+            </junit>
+        </jacoco:coverage>
+    </target>
+
+	<target name="report" depends="test">
+		<!--  Step 3: Create coverage report  -->
+		<jacoco:report>
+			<executiondata>
+				<file file="${test.result.exec.file}" />
+			</executiondata>
+			<!--  the class files and optional source files ...  -->
+			<structure name="Campaign Analytics Test">
+				<classfiles>
+					<fileset dir="${test.result.class.dir}">
+						<exclude name="**/*Test*.class" />
+					</fileset>
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${src.dir}" />
+				</sourcefiles>
+			</structure>
+			<!--  to produce reports in different formats.  -->
+			<html destdir="${test.result.report.dir}" />
+			<csv destfile="${test.result.report.dir}/report.csv" />
+			<xml destfile="${test.result.report.dir}/report.xml" />
+		</jacoco:report>
+	</target>
+
+	<target name="clean">
+		<delete dir="${classes.dir}" />
+		<delete dir="${jar.dir}" />
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="${classes.dir}" />
+		<!-- javac includeantruntime="false" srcdir="${src.dir};${test.dir}" destdir="${classes.dir}" debug="true" classpathref="classpath" source="1.6" target="1.6" / -->
+		<javac includeantruntime="false" srcdir="${src.dir};${test.dir}" destdir="${classes.dir}" debug="true" classpathref="classpath"/>
+	</target>
+
+	<!-- What to include in the jar -->
+	<target name="jar.Module" depends="compile">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/Module.jar" basedir="${classes.dir}">
+			<zipfileset src="${lib.dir}/json-simple-1.1.1.jar" />
+		</jar>
+	</target>
+
+	<target name="all" depends="jar.Module" />
+
+	<!-- ********************************************************************* -->
+	<!-- tarball -->
+	<target name="tar_clean">
+		<delete dir="${tar.dir}" />
+		<mkdir dir="${tar.dir}" />
+	</target>
+
+	<!-- Time Stamp -->
+	<tstamp>
+		<format property="build_time" pattern="MM/dd/yyyy hh:mm:ss" />
+	</tstamp>
+
+	<!-- Version File -->
+	<target name="version-file">
+		<echo file="${tar.dir}/version.txt" message="${version}  ${build_time}${line.separator}" />
+	</target>
+
+	<!-- Check if prod or not -->
+	<condition property="if_copy_prod">
+		<equals arg1="${prod}" arg2="true" />
+	</condition>
+
+	<target name="copy_env_prod" if="if_copy_prod">
+      <copy file="${basedir}/script/env.sh" tofile="${tar.dir}/conf/env.sh"/>
+    </target>
+
+    <target name="copy_env_test" unless="if_copy_prod">
+      <copy file="${basedir}/script/env_test.sh" tofile="${tar.dir}/conf/env.sh"/>
+      <copy todir="${tar.dir}/bin/backfill">
+          <fileset dir="${basedir}/script/backfill">
+              <include name="*.sh"/>
+          </fileset>
+      </copy>
+    </target>
+
+	<target name="tar_init" depends="tar_clean, version-file, copy_env_prod, copy_env_test">
+		<copy todir="${tar.dir}/bin">
+			<fileset dir="${basedir}/script">
+				<exclude name="env.sh" />
+				<exclude name="env_test.sh" />
+				<include name="*.sh" />
+			</fileset>
+		</copy>
+		<echo message="production build:${prod}" />
+
+        <mkdir dir="${tar.dir}/logs"/>
+        <mkdir dir="${tar.dir}/tmp"/>
+        <mkdir dir="${tar.dir}/run"/>
+    </target>
+
+	<target name="tarball" depends="all, tar_init">
+		<tar destfile="${basedir}/company.${module}.${version}.tar.gz" compression="gzip">
+			<tarfileset dir="${tar.dir}" dirmode="777">
+				<include name="run" />
+				<include name="tmp" />
+				<include name="logs" />
+			</tarfileset>
+			<tarfileset dir="${tar.dir}" dirmode="555" mode="555">
+				<include name="bin" />
+				<include name="bin/**/*" />
+			</tarfileset>
+			<tarfileset dir="${tar.dir}" dirmode="755" mode="755">
+				<include name="conf" />
+				<include name="conf/*.sh" />
+			</tarfileset>
+			<tarfileset dir="${tar.dir}">
+				<exclude name="run" />
+				<exclude name="tmp" />
+				<exclude name="logs" />
+				<exclude name="bin" />
+				<exclude name="bin/**/*" />
+				<exclude name="conf" />
+				<exclude name="conf/*.sh" />
+				<include name="**/*" />
+			</tarfileset>
+		</tar>
+		<delete dir="${tar.dir}" />
+	</target>
+</project>
+
