@@ -1,0 +1,64 @@
+{
+  "name": "seungjoonlee bootstrap",
+  "version": "0.1.0",
+  "devDependencies": {
+    "codemirror": "^4.9.0",
+    "grunt": "~0.4.5",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-imagemin": "^0.9.4",
+    "grunt-contrib-jasmine": "~0.3.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-less": "^1.0.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-environment": "^0.4.2",
+    "grunt-shell": "^1.1.2",
+    "grunt-template-jasmine-istanbul": "~0.2.5",
+    "jasmine-core": "^2.1.3",
+    "js-beautify": "^1.5.4",
+    "karma": "^0.12.28",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.2"
+  },
+  "description": "seungjoonlee bootstrap",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "backbone": "^1.1.2",
+    "bootstrap": "^3.3.2",
+    "grunt": "^0.4.5",
+    "grunt-aws-s3": "^0.12.3",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-imagemin": "^0.9.4",
+    "grunt-contrib-jasmine": "~0.3.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-init": "^0.3.2",
+    "grunt-template-jasmine-istanbul": "~0.2.5",
+    "highcharts": "0.0.8",
+    "history.js": "^1.8.0",
+    "jquery": "^2.1.3",
+    "jstree": "^3.0.9",
+    "karma": "^0.12.28",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-coverage": "^0.2.7"
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dimz119/bootstrap.git"
+  },
+  "author": "Seungjoon Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimz119/bootstrap/issues"
+  },
+  "homepage": "http://www.seungjoonlee.com"
+}

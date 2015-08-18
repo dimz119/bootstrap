@@ -1,0 +1,16 @@
+{
+    "version": "1.0.0",
+    "name": "dimz119/bootstrap",
+    "require": {
+        "robmorgan/phinx": "*",
+        "phpunit/phpunit": "4.3.*",
+        "phpunit/dbunit": "1.3.*",
+        "phpmailer/phpmailer": "5.2.7",
+        "aws/aws-sdk-php": "2.*"
+    },
+    "require-dev": {
+        "firephp/firephp-core": "dev-master",
+        "phpspec/phpspec": "~2.1",
+        "laravel/framework": "5.0.*"
+    }
+}

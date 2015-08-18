@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit
+    bootstrap="autoload.php"
+    backupGlobals="true"
+    backupStaticAttributes="true"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    stopOnFailure="true"
+    verbose="true"
+    syntaxCheck="true"
+    timeoutForSmallTests="60"
+    timeoutForMediumTests="120"
+    timeoutForLargeTests="360"
+    >
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <!-- Include File to be tested -->
+            <!--<file>src/Company/Product/SomeClass.php</file>-->
+
+            <!-- Include Directory to be tested -->
+            <directory suffix=".php">src/Company/Product</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+        <log type="coverage-clover" target="test/coverage/clover.xml"/>
+        <log type="coverage-html" target="test/coverage/html"  charset="UTF-8"
+            highlight="false" lowUpperBound="35" highLowerBound="70"/>
+    </logging>
+    <testsuites>
+        <testsuite name="Main">
+            <directory>test</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <!-- Global Variable
+        <var name="DB_DSN" value="mysql:dbname=DB_NAME;host=HOST_NAME" />
+        <var name="DB_USER" value="username" />
+        <var name="DB_PASSWD" value="password" />
+        <var name="DB_DBNAME" value="dbname" />
+        <ini name="display_errors" value="true"/>
+        -->
+    </php>
+</phpunit>
