@@ -1,0 +1,5 @@
+bower_components
+spec/localStorage_commonjs_spec.bundled.js
+node_modules
+\.DS_Store
+.idea

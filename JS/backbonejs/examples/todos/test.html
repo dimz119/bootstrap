@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Backbone.js Todos</title>
+  <link rel="stylesheet" href="todos.css"/>
+</head>
+
+<body>
+  <script src="../../spec/support/jquery.js"></script>
+  <script src="../../spec/support/underscore.js"></script>
+  <script src="../../spec/support/backbone.js"></script>
+
+  <script>
+  var app = {};
+  app.Router = Backbone.Router.extend({
+  	routes : {
+  		"posts/:id": "getPost",
+  		'*filter' : 'setFilter'
+  	},
+
+  	setFilter : function(param) {
+  		//console.log(param);
+  		window.filter = param.trim() || '';
+  	},
+
+  	getPost : function(id) {
+  		console.log("here : " + id);
+  	}
+  });
+
+
+  app.List = Backbone.View.extend({
+  	initialize: function() {
+  		console.log(window.filter);
+  	}
+  });
+
+  var rtr = new app.Router();
+  Backbone.history.start();
+
+  var list = new app.List();
+  </script>
+</body>
+</html>
