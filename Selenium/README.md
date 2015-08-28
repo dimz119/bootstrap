@@ -1,3 +1,8 @@
+Setup
+=====
+Download Selenium Client & WebDriver Language Bindings (http://www.seleniumhq.org/download/)
+Copy all the selenium library as reference to execute test files
+
 Start Hub
 =========
 java -jar selenium-server-standalone-2.47.1.jar -role hub
