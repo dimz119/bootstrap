@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="AnnotationSuite">
+	<test name="AnnotationTest">
+		<groups>
+			<run>
+				<!-- Only Run priority1 Group -->
+				<include name="priority1"></include>
+			</run>
+		</groups>
+		<packages>
+			<!-- Run only testNG package -->
+			<package name="com.seungjoonlee.testNG"></package>
+		</packages>
+	</test>
+</suite>

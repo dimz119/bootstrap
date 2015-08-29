@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="AnnotationSuite">
+	<test name="AnnotationTest">
+		<classes>
+			<!-- Run only Annotation class -->
+			<class name="com.seungjoonlee.testNG.Annotation"></class>
+		</classes>
+	</test>
+</suite>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="AnnotationSuite">
+	<test name="AnnotationTest">
+		<parameter name="firstName" value="Seungjoon"></parameter>
+		<packages>
+			<!-- Run only testNG package -->
+			<package name="com.seungjoonlee.testNG"></package>
+		</packages>
+	</test>
+</suite>
