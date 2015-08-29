@@ -4,6 +4,7 @@
 	<property environment="env"/>
 	<property name="homeDir" value="${basedir}"/>
 	<property name="jarDir" value="${homeDir}/jar"/>
+	<property name="reportDir" value="${homeDir}/report"/>
 	<property name="test.dest" value="${homeDir}/build"/>
 	<property name="test.src" value="${homeDir}/src"/>
 	<property name="ng.result" value="test-output"/>
@@ -27,6 +28,7 @@
 	<!-- clean -->
 	<target name="clean">
 		<delete dir="${test.dest}"/>
+		<delete dir="${reportDir}"/>
 	</target>
 	
 	<!-- compile -->
@@ -54,6 +56,19 @@
 		<testng classpath="${test.classpath}:${test.dest}" outputDir="${ng.result}">
 			<xmlfileset dir="${homeDir}" includes="testNGSuite.xml"/>
 		</testng>
+	</target>
+	
+	<path id="jarClassPath">
+		<fileset dir="${jarDir}" includes="*.jar"/>
+	</path>
+	
+	<!-- report -->
+	<target name="report">
+		<mkdir dir="${homeDir}/report/output"/>
+		<xslt in="${ng.result}/testng-results.xml" style="xslt/testng-results.xsl" out="${homeDir}/report/output/index.html" classpathref="jarClassPath" processor="SaxonLiaison">
+			<param name="testNgXslt.outputDir" expression="${homeDir}/report/output/"/>
+			<param name="testNgXslt.showRuntimeTotals" expression="true"/>
+		</xslt>
 	</target>
 	
 	<target name="usage">
