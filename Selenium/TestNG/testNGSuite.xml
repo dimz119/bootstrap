@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="AnnotationSuite">
 	<test name="AnnotationTest">
+		<parameter name="firstName" value="Seungjoon"></parameter>
 		<classes>
 			<!-- Run only Annotation class -->
 			<class name="com.seungjoonlee.testNG.Annotation"></class>

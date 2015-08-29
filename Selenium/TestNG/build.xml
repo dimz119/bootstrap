@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Selenium" default="usage" basedir=".">
+	<!-- ========== Initialize Properties =================================== -->
+	<property environment="env"/>
+	<property name="homeDir" value="${basedir}"/>
+	<property name="jarDir" value="${homeDir}/jar"/>
+	<property name="test.dest" value="${homeDir}/build"/>
+	<property name="test.src" value="${homeDir}/src"/>
+	<property name="ng.result" value="test-output"/>
+
+	<target name="setClassPath" unless="test.classpath">
+		<path id="classpath_jars">
+			<fileset dir="${jarDir}" includes="*.jar"/>
+		</path>
+	
+		<pathconvert pathsep=":" property="test.classpath" refid="classpath_jars"/>
+	</target>
+
+	<target name="init" depends="setClassPath">
+		<tstamp>
+			<format property="start.time" pattern="MM/dd/yyyy hh:mm aa" />
+		</tstamp>
+		
+		<taskdef name="testng" classpath="${test.classpath}" classname="org.testng.TestNGAntTask" />
+	</target>
+	
+	<!-- clean -->
+	<target name="clean">
+		<delete dir="${test.dest}"/>
+	</target>
+	
+	<!-- compile -->
+	<target name="compile" depends="init, clean" >
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${test.dest}" includes="**/*"/>
+		</delete>
+	
+		<echo message="making directory..."/>
+		<mkdir dir="${test.dest}"/>
+		
+		<echo message="classpath------: ${test.classpath}"/>
+		
+		<echo message="compiling..."/>
+		<javac debug="true" includeantruntime="false" destdir="${test.dest}" srcdir="${test.src}" classpath="${test.classpath}">
+		</javac>
+	</target>
+	
+	<!-- build -->
+	<target name="build" depends="init">
+	</target>
+	
+	<!-- run -->
+	<target name="run" depends="compile">
+		<testng classpath="${test.classpath}:${test.dest}" outputDir="${ng.result}">
+			<xmlfileset dir="${homeDir}" includes="testNGSuite.xml"/>
+		</testng>
+	</target>
+	
+	<target name="usage">
+		<echo>Please type "ant run"</echo>
+	</target>
+	<!-- ****************** targets not used ****************** -->
+</project>
