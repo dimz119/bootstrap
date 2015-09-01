@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
@@ -20,6 +23,20 @@ public class Annotation {
 	private String username;
 	private String password;
 	private String browser;
+	
+	// FindBy Annotation to get WebElement
+	@FindBy(xpath=".//input[@id='email']")
+	WebElement email;
+	
+	@Test
+	public void findByAnnotationTest() {
+		WebDriver driver = new FirefoxDriver();
+		driver.get("http://www.google.com");
+		
+		// Initialize all the Annotation. This has to be in the constructor
+		PageFactory.initElements(driver, this);
+		WebElement emailClone = email;
+	}
 	
 	@BeforeSuite
 	public void beforeSuit() {
